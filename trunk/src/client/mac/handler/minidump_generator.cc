@@ -1172,6 +1172,9 @@ bool MinidumpGenerator::WriteModuleListStream(
 
   int image_count = dynamic_images_ ?
     dynamic_images_->GetImageCount() : _dyld_image_count();
+  
+  if (image_count == 0) // AllocateObjectAndArray will throw a fit if we send 0 in
+    return false;
 
   if (!list.AllocateObjectAndArray(image_count, MD_MODULE_SIZE))
     return false;
